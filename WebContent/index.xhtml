@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Inventory</title>
+	<link href="resources/css/styles.css" rel="stylesheet" type="text/css" />
+</h:head>
+<h:body>
+	<h2>JSF Inventory System</h2>
+	<br />
+	<f:view>
+
+		<!-- Input form -->
+
+		<h:panelGroup rendered="true">
+			<h3>
+				<h:outputText value="#{controller.action}" />
+				Product
+			</h3>
+			<h:form>
+				<h:panelGrid columns="2" style="background: #EFEFEF">
+					<h:outputText value="Name" />
+					<h:inputText value="#{controller.product.name}" />
+					<h:outputText value="Description" />
+					<h:inputTextarea value="#{controller.product.description}"
+						cols="40" rows="4" />
+					<h:outputText value="Quantity" />
+					<h:inputText value="#{controller.product.quantity}" />
+				</h:panelGrid>
+				<h:panelGroup>
+					<h:commandButton action="#{controller.add}"
+						value="#{controller.action}" styleClass="btn" />
+					<h:commandButton action="#{controller.cancel}" value="Cancel"
+						styleClass="btn" />
+				</h:panelGroup>
+			</h:form>
+		</h:panelGroup>
+
+		<!-- Status message -->
+
+		<br />
+		<h:panelGrid columns="1">
+			<h:outputText style="color:red" value="#{controller.status}" />
+		</h:panelGrid>
+		<br />
+
+		<!-- Search form -->
+
+		<h:form>
+			<h:panelGrid columns="5" style="background: #EFEFEF">
+				<h:outputText value="Product Search" />
+				<h:inputText value="#{controller.searchTerm}">
+				</h:inputText>
+				<h:selectOneMenu value="#{controller.searchField}">
+					<f:selectItem itemLabel="Id" itemValue="id" />
+					<f:selectItem itemLabel="Name" itemValue="name" />
+				</h:selectOneMenu>
+				<h:commandButton action="#{controller.search}" value="Search"
+					styleClass="btn">
+				</h:commandButton>
+				<h:commandButton action="#{controller.viewAll}" value="View All"
+					styleClass="btn">
+				</h:commandButton>
+			</h:panelGrid>
+		</h:form>
+		<br />
+
+		<!-- Product table -->
+
+		<h:form rendered="#{not empty controller.products}">
+			<h:panelGroup styleClass="scroll">
+				<h:dataTable value="#{controller.products}" var="product"
+					styleClass="product" headerClass="productheader"
+					columnClasses="first, second, third, fourth, fifth">
+					<h:column>
+						<f:facet name="header">Id</f:facet>#{product.id}</h:column>
+					<h:column>
+						<f:facet name="header">Name</f:facet>#{product.name}</h:column>
+					<h:column>
+						<f:facet name="header">Description</f:facet>#{product.description}</h:column>
+					<h:column>
+						<f:facet name="header">Quantity</f:facet>#{product.quantity}</h:column>
+					<h:column>
+						<f:facet name="header">Action</f:facet>
+						<h:panelGrid columns="2">
+							<h:commandButton value="Edit"
+								action="#{controller.edit(product)}" styleClass="btn" />
+							<h:commandButton value="Delete"
+								action="#{controller.delete(product)}" styleClass="btn" />
+						</h:panelGrid>
+					</h:column>
+				</h:dataTable>
+			</h:panelGroup>
+		</h:form>
+		<h:panelGroup rendered="#{empty controller.products}">
+			<p>
+				<b>No products found!</b>
+			</p>
+		</h:panelGroup>
+		<br />
+		<br />
+	</f:view>
+</h:body>
+</html>
